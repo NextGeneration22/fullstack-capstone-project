@@ -6,27 +6,26 @@ const connectToDatabase = require('../models/db');
 router.get('/', async (req, res, next) => {
     try {
         // Task 1: Connect to MongoDB using connectToDatabase database. Remember to use the await keyword and store the connection in `db`
-        // {{insert code here}}
-
+        const db = connectToDatabase()
         const collection = db.collection("gifts");
 
         // Initialize the query object
         let query = {};
 
         // Add the name filter to the query if the name parameter is not empty
-        // if (/* {{insert code here}} */) {
+        if (req.query.name) {
             query.name = { $regex: req.query.name, $options: "i" }; // Using regex for partial match, case-insensitive
-        // }
+        }
 
         // Task 3: Add other filters to the query
         if (req.query.category) {
-            // {{insert code here}}
+            query.category = {$regex: req.query.category, $options: "i"}
         }
         if (req.query.condition) {
-            // {{insert code here}} 
+            query.condition = {$regex: req.query.condition, $options: "i" }
         }
         if (req.query.age_years) {
-            // {{insert code here}}
+            query.age_years = {$regex: req.query.age_year, $opions: "i" s}
             query.age_years = { $lte: parseInt(req.query.age_years) };
         }
 
