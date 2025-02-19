@@ -12,12 +12,15 @@ async function connectToDatabase() {
     if (dbInstance){
         return dbInstance
     };
+    const client = new MongoClient(url)
+    try{
+        await client.connect();
+        console.log("data base conected");
+        let dbInstance = client.db(dbName);
+        return dbInstance
+    }catch(err){ console.log("data base error", err)};
 
-    const client = new MongoClient(url);      
-
-    // Task 1: Connect to MongoDB
-    // {{insert code}}
-
+     // Task 1: Connect to MongoDB
     // Task 2: Connect to database giftDB and store in variable dbInstance
     //{{insert code}}
 
