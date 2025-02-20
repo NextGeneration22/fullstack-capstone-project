@@ -25,13 +25,11 @@ router.get('/', async (req, res, next) => {
             query.condition = {$regex: req.query.condition, $options: "i" }
         }
         if (req.query.age_years) {
-            query.age_years = {$regex: req.query.age_year, $opions: "i" s}
             query.age_years = { $lte: parseInt(req.query.age_years) };
         }
 
         // Task 4: Fetch filtered gifts using the find(query) method. Make sure to use await and store the result in the `gifts` constant
-        // {{insert code here here}}
-
+        const gifts = collection.find(query).toArray();
         res.json(gifts);
     } catch (e) {
         next(e);
