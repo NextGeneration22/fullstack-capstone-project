@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {urlConfig} from '../../config';
-import { response } from 'express';
 
 function MainPage() {
     const [gifts, setGifts] = useState([]);
@@ -84,3 +83,4 @@ function MainPage() {
 }
 
 export default MainPage;
+
