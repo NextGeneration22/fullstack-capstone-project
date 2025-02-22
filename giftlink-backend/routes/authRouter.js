@@ -42,10 +42,10 @@ router.post('/register', async (req, res) => {
                 logger.info('User registered successfully');
                 res.status(201).json({authtoken,email});
             }else{
-                res.status(409).send('User already exist')
+                res.status(409).json({error:"User already exist"})
             }
         } catch (e) {
-             res.status(500).send('Internal server error');
+             res.status(500).json({error:'Internal server error try again later'});
              console.log("this is the error: ", e)
         }
     });

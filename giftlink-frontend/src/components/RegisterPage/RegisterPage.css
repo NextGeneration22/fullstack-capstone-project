@@ -44,3 +44,15 @@ a.text-primary:hover {
 a.text-secondary:hover {
     text-decoration: underline;
 }
+
+#navbarNav{
+    display: flex;
+    justify-content: right;
+    background-color: #9df313;
+}
+
+.GiftLink{
+    background-color: pink;
+    border-radius: 5px;
+    width: 8vw;
+}

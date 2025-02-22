@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { urlConfig } from '../../config';
+import {useAppContext} from '../../context/AuthContext';
+import {useNavigate} from 'react-router-dom';
 
 import './RegisterPage.css';
 
@@ -9,9 +12,41 @@ function RegisterPage() {
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [showerr, setShowerr]= useState('');
     // insert code here to create handleRegister function and include console.log
+
+    const navigate = useNavigate();
+    const { setIsLoggedIn } = useAppContext();
     const handleRegister = async () => {
-        console.log("Register invoked")
+        const url = `${urlConfig.backendUrl}/api/auth/register`;
+        try{
+          const response = await fetch(url, {
+            method: 'POST',
+            headers:{
+              'content-type': 'application/json'
+            },
+            body: JSON.stringify({
+              email: email,
+              firstName:firstName,
+              lastName: lastName,
+              password: password
+            })
+          });
+          const json = await response.json();
+          if(json.authtoken){
+            sessionStorage.setItem('auth-token', json.authtoken);
+            sessionStorage.setItem('name', firstName);
+            sessionStorage.setItem('email', json.email);
+            setIsLoggedIn(true);
+            navigate('/app');
+          }
+          if(json.error){
+            setShowerr(json.error);
+          }
+        }catch(e){
+          console.log("Error fetching details: " + e.message);
+        }
+
     }
          return (
             <div className="container mt-5">
@@ -65,7 +100,7 @@ function RegisterPage() {
                         <p className="mt-4 text-center">
                             Already a member? <a href="/app/login" className="text-primary">Login</a>
                         </p>
-
+                        <div className="text-danger">{showerr}</div>
                          </div>
                     </div>
                 </div>
