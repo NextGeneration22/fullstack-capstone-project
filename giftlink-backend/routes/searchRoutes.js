@@ -29,8 +29,10 @@ router.get('/', async (req, res, next) => {
         }
 
         // Task 4: Fetch filtered gifts using the find(query) method. Make sure to use await and store the result in the `gifts` constant
+        if (Object.keys(query).length === 0) {
+            return res.json([]);
+        }
         const gifts = await collection.find(query).toArray();
-        console.log(query)
         res.json(gifts);
     } catch (e) {
         console.log("the error from searchRout is:", e)
