@@ -7,6 +7,7 @@ const giftRoutes = require('./routes/giftRoutes')
 const searchRoutes = require('./routes/searchRoutes')
 const connectToDatabase = require('./models/db');
 const {loadData} = require("./util/import-mongo/index");
+const authRouter = require('./routes/authRouter.js');
 
 
 const app = express();
@@ -29,8 +30,9 @@ const logger = require('./logger');
 app.use(pinoHttp({ logger }));
 
 // Use Routes
-app.use('/api/gifts', giftRoutes)
-app.use('/api/search', searchRoutes)
+app.use('/api/gifts', giftRoutes);
+app.use('/api/search', searchRoutes);
+app.use('/api/auth', authRouter );
 
 
 // Global Error Handler
