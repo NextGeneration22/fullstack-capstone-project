@@ -1,9 +1,7 @@
-POST http://localhost:3060/api/auth/register
+POST http://localhost:3060/api/auth/login
 Content-Type: application/json
 
 {
-    "email":"user1@gmail.com",
-    "firstName": "user",
-    "lastName":"1",
-    "password":"123"
+    "email":"user2@gmail.com",
+    "password":"qwe"
 }

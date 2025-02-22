@@ -50,4 +50,35 @@ router.post('/register', async (req, res) => {
         }
     });
 
+    router.post('/login', async (req, res)=>{
+        try{
+            const db = await connectToDatabase();
+            const collection = db.collection('users');
+            const userExists = await collection.findOne({email: req.body.email});
+            if(userExists){
+              const password = req.body.password;
+              const passwordMach = await bcryptjs.compare(password, userExists.password )
+              if(passwordMach){
+                const username = userExists.firstName;
+                const email = req.body.email;
+                const payload = {
+                    user: {
+                        id: userExists.insertedId,
+                    },
+                };
+                const authtoken = jwt.sign(payload, JWT_SECRET);
+                res.status(200).json({authtoken, email, username});
+
+              }else{
+                res.status(401).json({error:"Email or password is not correct !"})
+              }
+            }else{
+                res.status(401).json({error:"Email or password is not correct!"})
+            }
+        }catch(e){
+            console.log("the error is: ", e)
+            res.status(404).json({error: "Internal server error try again!"})
+        }
+    })
+
 module.exports = router;
