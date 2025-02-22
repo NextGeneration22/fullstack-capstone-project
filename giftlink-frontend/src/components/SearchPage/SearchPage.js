@@ -9,8 +9,8 @@ function SearchPage() {
     //Task 1: Define state variables for the search query, age range, and search results.
     const [name, setName]= useState('');
     const [ageRange, setagerange]= useState(6);
-    const [category, setCategory]= useState('')
-    const [condition, setCondition]= useState('')
+    const [category, setCategory]= useState('');
+    const [condition, setCondition]= useState('');
     const [results, setSearchResults]= useState([]);
 
     const categories = ['Living', 'Bedroom', 'Bathroom', 'Kitchen', 'Office'];
@@ -128,6 +128,7 @@ function SearchPage() {
 
                             <div className="card-">
                                 <h5 className="card-title">{gift.name}</h5>
+                                <p className='description'>{gift.description}</p>
                                 <p className={`card-text ${getConditionClass(gift.condition)}`}>
                                 {gift.condition}
                                 </p>
