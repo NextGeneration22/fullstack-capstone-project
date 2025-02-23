@@ -50,35 +50,71 @@ router.post('/register', async (req, res) => {
         }
     });
 
-    router.post('/login', async (req, res)=>{
-        try{
+router.post('/login', async (req, res)=>{
+    try{
+        const db = await connectToDatabase();
+        const collection = db.collection('users');
+        const userExists = await collection.findOne({email: req.body.email});
+        if(userExists){
+            const password = req.body.password;
+            const passwordMach = await bcryptjs.compare(password, userExists.password )
+            if(passwordMach){
+            const username = userExists.firstName;
+            const email = req.body.email;
+            const payload = {
+                user: {
+                    id: userExists.insertedId,
+                },
+            };
+            const authtoken = jwt.sign(payload, JWT_SECRET);
+            res.status(200).json({authtoken, email, username});
+
+            }else{
+            res.status(401).json({error:"Email or password is not correct !"})
+            }
+        }else{
+            res.status(401).json({error:"Email or password is not correct!"})
+        }
+    }catch(e){
+        console.log("the error is: ", e)
+        res.status(404).json({error: "Internal server error try again!"})
+    }
+})
+
+router.put('/update', async (req, res)=>{
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        logger.error('Validation errors in update request', errors.array());
+        return res.status(400).json({ errors: errors.array() });
+    }
+    try{
+        const email = req.headers.email;
+
+        if (!email) {
+            logger.error('Email not found in the request headers');
+            return res.status(400).json({ error: "Email not found in the request headers" });
+        }else{
             const db = await connectToDatabase();
             const collection = db.collection('users');
-            const userExists = await collection.findOne({email: req.body.email});
-            if(userExists){
-              const password = req.body.password;
-              const passwordMach = await bcryptjs.compare(password, userExists.password )
-              if(passwordMach){
-                const username = userExists.firstName;
-                const email = req.body.email;
+            const date = new Date();
+            const updateduserInfo = await collection.findOneAndUpdate({email: email}, {$set: {firstName: req.body.firstName, updateddAt:date}});
+            if(!updateduserInfo){
+                return res.status(404).json({ error: "User not found" });
+            }else{
+                const firstName = updateduserInfo.firstName;
+                const email = updateduserInfo.email;
                 const payload = {
                     user: {
-                        id: userExists.insertedId,
-                    },
-                };
-                const authtoken = jwt.sign(payload, JWT_SECRET);
-                res.status(200).json({authtoken, email, username});
-
-              }else{
-                res.status(401).json({error:"Email or password is not correct !"})
-              }
-            }else{
-                res.status(401).json({error:"Email or password is not correct!"})
+                        id: updateduserInfo.insertedId
+                    }
+                }
+                const authtoken = jwt.sign(payload, JWT_SECRET)
+                res.status(200).json({authtoken, firstName, email})
             }
-        }catch(e){
-            console.log("the error is: ", e)
-            res.status(404).json({error: "Internal server error try again!"})
         }
-    })
+    }catch(e){
+        res.status(500).json({error:"Internal server error!"})
+    }
+})
 
 module.exports = router;
