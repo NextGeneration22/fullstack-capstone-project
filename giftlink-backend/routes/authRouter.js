@@ -83,37 +83,44 @@ router.post('/login', async (req, res)=>{
 
 router.put('/update', async (req, res)=>{
     const errors = validationResult(req);
-    if (!errors.isEmpty()) {
+    if(!errors.isEmpty()){
         logger.error('Validation errors in update request', errors.array());
         return res.status(400).json({ errors: errors.array() });
-    }
-    try{
-        const email = req.headers.email;
-
-        if (!email) {
-            logger.error('Email not found in the request headers');
-            return res.status(400).json({ error: "Email not found in the request headers" });
-        }else{
-            const db = await connectToDatabase();
-            const collection = db.collection('users');
-            const date = new Date();
-            const updateduserInfo = await collection.findOneAndUpdate({email: email}, {$set: {firstName: req.body.firstName, updateddAt:date}});
-            if(!updateduserInfo){
-                return res.status(404).json({ error: "User not found" });
+    }else{
+        try{
+            const email = req.headers.email;
+            const token = req.headers.Authorization;
+            if(!email && !token){
+                res.status(400).json({error:"Email not found in the request headers"})
             }else{
-                const firstName = updateduserInfo.firstName;
-                const email = updateduserInfo.email;
-                const payload = {
-                    user: {
-                        id: updateduserInfo.insertedId
+                const db = await connectToDatabase();
+                const collection = await db.collection('users');
+                const firstName = req.body.firstName;
+                if(firstName){
+                    const updateduserInfo = await collection.updateOne({email: email}, {$set: {firstName: firstName}});
+                    if(updateduserInfo.modifiedCount == 0){
+                        res.status(204).json({});
+                    }else{
+                        const userInfo = await collection.findOne({email:email});
+                        const date = new Date();
+                        const updatedate = await collection.updateOne({email: email}, {$set: {updateddAt: date}});
+                        const payload = {
+                            user: {
+                                _id: userInfo.insertedId
+                            }
+                        }
+                        const authtoken = jwt.sign(payload, JWT_SECRET);
+                        res.status(200).json({authtoken});
                     }
+                }else{
+                    res.status(400).json({error: "please provide a name!"})
                 }
-                const authtoken = jwt.sign(payload, JWT_SECRET)
-                res.status(200).json({authtoken, firstName, email})
             }
+        }catch(e){
+            res.status(500).json({error: "Internal server error!"})
+            console.log("error isss: ", e)
         }
-    }catch(e){
-        res.status(500).json({error:"Internal server error!"})
+
     }
 })
 

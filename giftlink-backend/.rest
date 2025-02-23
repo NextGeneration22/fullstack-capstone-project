@@ -5,3 +5,11 @@ Content-Type: application/json
     "email":"user2@gmail.com",
     "password":"qwe"
 }
+###
+PUT http://localhost:3060/api/auth/update
+Content-Type: application/json
+email: user2@gmail.com
+
+{
+    "firstName": "Ayoube"
+}
