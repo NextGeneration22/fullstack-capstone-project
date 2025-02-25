@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {urlConfig} from '../../config';
@@ -64,17 +64,17 @@ function SearchPage() {
         navigate(`/app/product/${productId}`)
     };
 
-const enablebutton = ()=>{
+const enablebutton = useCallback (()=>{
     if(name !== '' || category !== '' || condition !== ''){
         setbuttondisabled(false);
     }else{
         setbuttondisabled(true);
     }
-}
+})
 
 useEffect(()=>{
     enablebutton()
-}, [name, categories, condition])
+}, [name, categories, condition, enablebutton])
     return (
         <>
         <div className="container mt-5">

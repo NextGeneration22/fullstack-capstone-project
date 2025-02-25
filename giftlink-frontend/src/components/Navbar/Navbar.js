@@ -55,7 +55,7 @@ export default function Navbar() {
                     {isLoggedIn ? (
                         <>
                         <li className="nav-item"> <span className="nav-link" style={{color: "black", cursor:"pointer"}} onClick={profileSecton}>Welcome, {userName}</span> </li>
-                        <li className="nav-item"><a className="nav-link" style={{cursor:"pointer"}} onClick={handleLogout}>Logout</a></li>
+                        <li className="nav-item"><button className="nav-link" style={{cursor:"pointer"}} onClick={handleLogout}>Logout</button></li>
                         </>
                     ):(
                     <>

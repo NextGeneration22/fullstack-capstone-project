@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { urlConfig } from '../../config';
 import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../../context/AuthContext';
@@ -55,17 +55,17 @@ function LoginPage() {
       }
     }
 
-    const enablebutton = ()=>{
+    const enablebutton = useCallback(()=>{
       if(email && password){
         setbuttondisabled(false);
       }else{
         setbuttondisabled(true)
       }
-    }
+    })
     
     useEffect(()=>{
       enablebutton()
-    }, [email, password])
+    }, [email, password, enablebutton])
 
     return (
               <div className="container mt-5">

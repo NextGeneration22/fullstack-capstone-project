@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { urlConfig } from '../../config';
 import {useAppContext} from '../../context/AuthContext';
 import {useNavigate} from 'react-router-dom';
@@ -58,17 +58,17 @@ function RegisterPage() {
        }
     }
 
-    const enablebutton = ()=>{
+    const enablebutton = useCallback(()=>{
       if(firstName !== '' && lastName !=='' && email !== '' && password !==''){
           setbuttondisabled(false)
       }else{
         setbuttondisabled(true)
       }
-    }
+    })
 
     useEffect(()=>{
           enablebutton()
-    }, [firstName, lastName, email, password])
+    }, [firstName, lastName, email, password, enablebutton])
 
          return (
             <div className="container mt-5">
