@@ -1,3 +1,4 @@
+/*jshint esversion: 8 */
 const express = require('express');
 const router = express.Router();
 const connectToDatabase = require('../models/db');
@@ -6,7 +7,7 @@ const connectToDatabase = require('../models/db');
 router.get('/', async (req, res, next) => {
     try {
         //Connect to MongoDB using connectToDatabase database. Remember to use the await keyword and store the connection in `db`
-        const db = await connectToDatabase()
+        const db = await connectToDatabase();
         const collection = db.collection("gifts");
 
         // Initialize the query object
@@ -19,10 +20,10 @@ router.get('/', async (req, res, next) => {
 
         //Add other filters to the query
         if (req.query.category) {
-            query.category = {$regex: req.query.category, $options: "i"}
+            query.category = {$regex: req.query.category, $options: "i"};
         }
         if (req.query.condition) {
-            query.condition = {$regex: req.query.condition, $options: "i" }
+            query.condition = {$regex: req.query.condition, $options: "i" };
         }
         if (req.query.age_years) {
             query.age_years = { $lte: parseInt(req.query.age_years) };
@@ -35,7 +36,7 @@ router.get('/', async (req, res, next) => {
         const gifts = await collection.find(query).toArray();
         res.json(gifts);
     } catch (e) {
-        console.log("the error from searchRout is:", e)
+        console.log("the error from searchRout is:", e);
         next(e);
     }
 });

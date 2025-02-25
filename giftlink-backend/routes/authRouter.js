@@ -1,12 +1,13 @@
+/*jshint esversion: 8 */
 const express =require('express')
 const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const {validationResult } = require('express-validator');
-const validator = require('validator')
+const validator = require('validator');
 const dotenv = require('dotenv');
 const pino = require('pino');
 const connectToDatabase = require('../models/db');
-const router = express.Router()
+const router = express.Router();
 
 const logger = pino();
 
@@ -41,26 +42,26 @@ router.post('/register', async (req, res) => {
                             id:newUser.insertedId
                         }
                     };
-                    console.log("the payload is: ", payload)
+                    console.log("the payload is: ", payload);
                     const authtoken = jwt.sign(payload, JWT_SECRET);
                     logger.info('User registered successfully');
                     res.status(201).json({authtoken,email});
                 }else{
-                    res.status(409).json({error:"User already exist"})
+                    res.status(409).json({error:"User already exist"});
                 }
             }else{
-                res.status(409).json({error:"Please enter a valid email!"})
+                res.status(409).json({error:"Please enter a valid email!"});
             }
         } catch (e) {
              res.status(500).json({error:'Internal server error try again later'});
-             console.log("this is the error: ", e)
+             console.log("this is the error: ", e);
         }
     });
 
 router.post('/login', async (req, res)=>{
     try{
         const email = req.body.email;
-        const isvalidEmail = validator.isEmail(email) && email.endsWith(`@gmail.com`)
+        const isvalidEmail = validator.isEmail(email) && email.endsWith(`@gmail.com`);
         if(isvalidEmail){
             const db = await connectToDatabase();
             const collection = db.collection('users');
@@ -76,22 +77,22 @@ router.post('/login', async (req, res)=>{
                         id: userExists._id
                     },
                 };
-                console.log("the payload is: ", payload)
+                console.log("the payload is: ", payload);
                 const authtoken = jwt.sign(payload, JWT_SECRET);
                 res.status(200).json({authtoken, email, username});
 
                 }else{
-                res.status(401).json({error:"Email or password is not correct !"})
+                res.status(401).json({error:"Email or password is not correct !"});
                 }
             }else{
-                res.status(401).json({error:"Email or password is not correct!"})
+                res.status(401).json({error:"Email or password is not correct!"});
             }
         }else{
-            res.status(400).json({error: "Please enter a valid email!"})
+            res.status(400).json({error: "Please enter a valid email!"});
         }
     }catch(e){
-        console.log("the error is: ", e)
-        res.status(404).json({error: "Internal server error try again!"})
+        console.log("the error is: ", e);
+        res.status(404).json({error: "Internal server error try again!"});
     }
 })
 
@@ -105,7 +106,7 @@ router.put('/update', async (req, res)=>{
             const email = req.headers.email;
             const token = req.headers.Authorization;
             if(!email && !token){
-                res.status(400).json({error:"Email not found in the request headers"})
+                res.status(400).json({error:"Email not found in the request headers"});
             }else{
                 const db = await connectToDatabase();
                 const collection = await db.collection('users');
@@ -123,17 +124,17 @@ router.put('/update', async (req, res)=>{
                                 _id: userInfo.insertedId
                             }
                         }
-                        console.log("the payload is: ", payload)
+                        console.log("the payload is: ", payload);
                         const authtoken = jwt.sign(payload, JWT_SECRET);
                         res.status(200).json({authtoken});
                     }
                 }else{
-                    res.status(400).json({error: "please provide a name!"})
+                    res.status(400).json({error: "please provide a name!"});
                 }
             }
         }catch(e){
-            res.status(500).json({error: "Internal server error!"})
-            console.log("error isss: ", e)
+            res.status(500).json({error: "Internal server error!"});
+            console.log("error isss: ", e);
         }
 
     }
