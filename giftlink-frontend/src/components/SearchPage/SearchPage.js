@@ -74,7 +74,7 @@ function SearchPage() {
 
 useEffect(()=>{
     enablebutton()
-}, [name, categories, condition, enablebutton])
+}, [name, category, condition, enablebutton])
     return (
         <>
         <div className="container mt-5">
