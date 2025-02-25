@@ -61,7 +61,7 @@ function LoginPage() {
       }else{
         setbuttondisabled(true)
       }
-    })
+    }, [email, password])
     
     useEffect(()=>{
       enablebutton()

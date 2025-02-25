@@ -64,13 +64,13 @@ function SearchPage() {
         navigate(`/app/product/${productId}`)
     };
 
-const enablebutton = useCallback (()=>{
+ const enablebutton = useCallback (()=>{
     if(name !== '' || category !== '' || condition !== ''){
         setbuttondisabled(false);
     }else{
         setbuttondisabled(true);
     }
-})
+}, [name, category, condition]);
 
 useEffect(()=>{
     enablebutton()

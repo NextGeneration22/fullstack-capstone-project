@@ -64,7 +64,7 @@ function RegisterPage() {
       }else{
         setbuttondisabled(true)
       }
-    })
+    }, [firstName, lastName, email, password]);
 
     useEffect(()=>{
           enablebutton()
