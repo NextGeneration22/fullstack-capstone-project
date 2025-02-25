@@ -41,7 +41,7 @@ export default function Navbar() {
             </button> */}
             <div className="collapse navbar-collapse" id="navbarNav">
                 <ul className="navbar-nav">
-                    {/* Task 1: Add links to Home and Gifts below*/}
+                    {/*Add links to Home and Gifts below*/}
                     <li className="nav-item">
                     <a className="nav-link" href="/home.html">Home</a>
                     </li>

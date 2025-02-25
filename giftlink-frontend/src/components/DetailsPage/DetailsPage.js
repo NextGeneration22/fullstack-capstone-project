@@ -13,14 +13,14 @@ function DetailsPage() {
 	useEffect(() => {
         const authenticationToken = sessionStorage.getItem('auth-token');
         if (!authenticationToken) {
-			 //Task 1: Check for authentication and redirect
+			 //Check for authentication and redirect
             navigate('/app/login')
         }
 
         // get the gift to be rendered on the details page
         const fetchGift = async () => {
             try {
-				// Task 2: Fetch gift details
+				//Fetch gift details
                 const response = await fetch(`${urlConfig.backendUrl}/api/gifts/${productId}`);
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -36,14 +36,14 @@ function DetailsPage() {
 
         fetchGift();
 
-		// Task 3: Scroll to top on component mount
+		//Scroll to top on component mount
 		window.scroll(0, 0)
 
     }, [productId]);
 
 
     const handleBackClick = () => {
-		// Task 4: Handle back click
+		//Handle back click
 		navigate(-1)
 	};
 
@@ -87,7 +87,7 @@ return (
                 <div className="card-body">
                     <div className="image-placeholder-large">
                         {gift.image ? (
-			// Task 5: Display gift image
+			//Display gift image
             <img src={gift.image} alt={gift.name} className="product-image-large" />
                         ) : (
                             <div className="no-image-available-large">No Image Available</div>
@@ -112,7 +112,7 @@ return (
             </div>
             <div className="comments-section mt-4">
                 <h3 className="mb-3">Comments</h3>
-				{// Task 7: Render comments section by using the map function to go through all the comments
+				{//Render comments section by using the map function to go through all the comments
 }
 				{comments.map((comment)=> (
                     <div className="card mb-3">

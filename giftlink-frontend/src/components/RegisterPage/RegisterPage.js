@@ -7,14 +7,14 @@ import './RegisterPage.css';
 
 function RegisterPage() {
 
-    //insert code here to create useState hook variables for firstName, lastName, email, password
+    //create useState hook variables for firstName, lastName, email, password...
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [buttonendisabled, setbuttondisabled] = useState(true);
     const [showerr, setShowerr]= useState('');
-    // insert code here to create handleRegister function and include console.log
+    //create handleRegister function and include console.log
 
     const navigate = useNavigate();
     const { setIsLoggedIn } = useAppContext();
@@ -77,7 +77,7 @@ function RegisterPage() {
                         <div className="register-card p-4 border rounded">
                             <h2 className="text-center mb-4 font-weight-bold">Register</h2>
 
-                    {/* insert code here to create input elements for all the variables - firstName, lastName, email, password */}
+                    {/*create input elements for all the variables - firstName, lastName, email, password */}
                     <div className="mb-4">
 
                          <label htmlFor="firstName" className="form label"> First Name:</label><br/>
@@ -117,7 +117,7 @@ function RegisterPage() {
                                  onChange={(e) => setPassword(e.target.value)}
                                />
                     </div>
-                    {/* insert code here to create a button that performs the `handleRegister` function on click */}
+                    {/*create a button that performs the `handleRegister` function on click */}
                     <button className="registerbtn" onClick={handleRegister} disabled={buttonendisabled}>Register</button>
                         <p className="mt-4 text-center">
                             Already a member? <a href="/app/login" className="text-primary">Login</a>
