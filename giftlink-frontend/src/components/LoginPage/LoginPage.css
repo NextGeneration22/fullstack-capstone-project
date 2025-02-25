@@ -44,3 +44,13 @@ a.text-primary:hover {
 a.text-secondary:hover {
     text-decoration: underline;
 }
+.loginbtn{
+    width: 100%;
+    background-color: rgb(44, 143, 236);
+    color: white;
+    border-radius: 10px;
+}
+.loginbtn:disabled{
+    cursor: not-allowed;
+    background-color: rgb(218, 213, 213);
+}

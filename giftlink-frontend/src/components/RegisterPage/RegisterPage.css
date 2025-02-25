@@ -45,14 +45,14 @@ a.text-secondary:hover {
     text-decoration: underline;
 }
 
-#navbarNav{
-    display: flex;
-    justify-content: right;
-    background-color: #9df313;
-}
 
-.GiftLink{
-    background-color: pink;
-    border-radius: 5px;
-    width: 8vw;
+.registerbtn{
+    width: 100%;
+    border-radius: 10px;
+    background-color: rgb(15, 108, 207);
+    color: #fff;
+}
+.registerbtn:disabled {
+    cursor: not-allowed;
+   background-color: rgb(218, 213, 213);
 }

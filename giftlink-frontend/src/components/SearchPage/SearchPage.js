@@ -6,12 +6,13 @@ import './SearchPage.css'
 
 function SearchPage() {
 
-    //Task 1: Define state variables for the search query, age range, and search results.
+    // Define state variables for the search query, age range, and search results.
     const [name, setName]= useState('');
     const [ageRange, setagerange]= useState(6);
     const [category, setCategory]= useState('');
     const [condition, setCondition]= useState('');
     const [results, setSearchResults]= useState([]);
+    const [buttondisabled, setbuttondisabled]= useState(true)
 
     const categories = ['Living', 'Bedroom', 'Bathroom', 'Kitchen', 'Office'];
     const conditions = ['New', 'Like New', 'Older'];
@@ -38,7 +39,7 @@ function SearchPage() {
     }, []);
 
 
-    // Task 2. Fetch search results from the API based on user inputs.
+    // Fetch search results from the API based on user inputs.
     const handleSearch = async ()=>{
         const queryParams = new URLSearchParams({
             name: name, category: category, condition: condition, age_year: ageRange,
@@ -59,12 +60,21 @@ function SearchPage() {
     };
 
     const goToDetailsPage = (productId) => {
-        // Task 6. Enable navigation to the details page of a selected gift.
+        // Enable navigation to the details page of a selected gift.
         navigate(`/app/product/${productId}`)
     };
 
+const enablebutton = ()=>{
+    if(name !== '' || category !== '' || condition !== ''){
+        setbuttondisabled(false);
+    }else{
+        setbuttondisabled(true);
+    }
+}
 
-
+useEffect(()=>{
+    enablebutton()
+}, [name, categories, condition])
     return (
         <>
         <div className="container mt-5">
@@ -73,7 +83,7 @@ function SearchPage() {
                     <div className="filter-section mb-3 p-3 border rounded">
                         <h5>Filters</h5>
                         <div className="d-flex flex-column">
-                            {/* Task 3: Dynamically generate category and condition dropdown options.*/}
+                            {/* Dynamically generate category and condition dropdown options.*/}
                             <label htmlFor="categorySelect">Category</label>
                             <select id="categorySelect" className="form-control my-1" onChange={e=> setCategory(e.target.value)}>
                                 <option value="">All</option>
@@ -89,7 +99,7 @@ function SearchPage() {
                                 <option key={condition} value={condition} >{condition}</option>
                                 ))}
                             </select>
-                            {/* Task 4: Implement an age range slider and display the selected value. */}
+                            {/*Implement an age range slider and display the selected value. */}
                             <label htmlFor="ageRange">Less than {ageRange} years</label>
                             <input
                                 type="range"
@@ -102,7 +112,7 @@ function SearchPage() {
                            />
                         </div>
                     </div>
-                    {/* Task 7: Add text input field for search criteria*/}
+                    {/*Add text input field for search criteria*/}
                     <input
                           className='search-input'
                           type="text"
@@ -110,9 +120,9 @@ function SearchPage() {
                           value={name}
                           onChange={e=> setName(e.target.value)}
                     /><br/>
-                    <button className='search-button' onClick={handleSearch}>Search</button>
+                    <button className='search-button' onClick={handleSearch} disabled={buttondisabled}>Search</button>
                     </div>
-                    {/*Task 5: Display search results and handle empty results with a message. */}
+                    {/*Display search results and handle empty results with a message. */}
                     <div className="row">
                        {results.length > 0 ? (
                        results.map((gift) => (

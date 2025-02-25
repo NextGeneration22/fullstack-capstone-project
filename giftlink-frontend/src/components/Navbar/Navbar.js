@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom'
-import {urlConfig} from '../../config';
+import './Navbar.css'
 import { useAppContext } from '../../context/AuthContext';
 
 export default function Navbar() {

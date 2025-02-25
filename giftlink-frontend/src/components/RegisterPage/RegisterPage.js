@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { urlConfig } from '../../config';
 import {useAppContext} from '../../context/AuthContext';
 import {useNavigate} from 'react-router-dom';
@@ -12,42 +12,64 @@ function RegisterPage() {
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [buttonendisabled, setbuttondisabled] = useState(true);
     const [showerr, setShowerr]= useState('');
     // insert code here to create handleRegister function and include console.log
 
     const navigate = useNavigate();
     const { setIsLoggedIn } = useAppContext();
+    const cheekpassword = ()=>{
+      const regex = /^(?=.*[A-Z])(?=.*\d)(?=.*[^\w]).{4,}$/;
+      const validpassword = regex.test(password);
+      return validpassword;
+    }
     const handleRegister = async () => {
         const url = `${urlConfig.backendUrl}/api/auth/register`;
-        try{
-          const response = await fetch(url, {
-            method: 'POST',
-            headers:{
-              'content-type': 'application/json'
-            },
-            body: JSON.stringify({
-              email: email,
-              firstName:firstName,
-              lastName: lastName,
-              password: password
-            })
-          });
-          const json = await response.json();
-          if(json.authtoken){
-            sessionStorage.setItem('auth-token', json.authtoken);
-            sessionStorage.setItem('name', firstName);
-            sessionStorage.setItem('email', json.email);
-            setIsLoggedIn(true);
-            navigate('/app');
-          }
-          if(json.error){
-            setShowerr(json.error);
-          }
-        }catch(e){
-          console.log("Error fetching details: " + e.message);
-        }
-
+        if(cheekpassword()){
+            try{
+              const response = await fetch(url, {
+                method: 'POST',
+                headers:{
+                  'content-type': 'application/json'
+                },
+                body: JSON.stringify({
+                  email: email,
+                  firstName:firstName,
+                  lastName: lastName,
+                  password: password
+                })
+              });
+              const json = await response.json();
+              if(json.authtoken){
+                sessionStorage.setItem('auth-token', json.authtoken);
+                sessionStorage.setItem('name', firstName);
+                sessionStorage.setItem('email', json.email);
+                setIsLoggedIn(true);
+                navigate('/app');
+              }
+              if(json.error){
+                setShowerr(json.error);
+              }
+          }catch(e){
+           console.log("Error fetching details: " + e.message);
+         }
+       }else{
+        setShowerr("The password must have 4 characters, one uppercase, non alphabetic litter, and a number.")
+       }
     }
+
+    const enablebutton = ()=>{
+      if(firstName !== '' && lastName !=='' && email !== '' && password !==''){
+          setbuttondisabled(false)
+      }else{
+        setbuttondisabled(true)
+      }
+    }
+
+    useEffect(()=>{
+          enablebutton()
+    }, [firstName, lastName, email, password])
+
          return (
             <div className="container mt-5">
                 <div className="row justify-content-center">
@@ -96,7 +118,7 @@ function RegisterPage() {
                                />
                     </div>
                     {/* insert code here to create a button that performs the `handleRegister` function on click */}
-                    <button className="btn btn-primary w-100 mb-3" onClick={handleRegister}>Register</button>
+                    <button className="registerbtn" onClick={handleRegister} disabled={buttonendisabled}>Register</button>
                         <p className="mt-4 text-center">
                             Already a member? <a href="/app/login" className="text-primary">Login</a>
                         </p>
