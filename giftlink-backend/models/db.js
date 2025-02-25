@@ -20,12 +20,6 @@ async function connectToDatabase() {
         return dbInstance
     }catch(err){ console.log("data base error", err)};
 
-     // Task 1: Connect to MongoDB
-    // Task 2: Connect to database giftDB and store in variable dbInstance
-    //{{insert code}}
-
-    // Task 3: Return database instance
-    // {{insert code}}
 }
 
 module.exports = connectToDatabase;
