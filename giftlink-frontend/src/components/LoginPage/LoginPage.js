@@ -13,6 +13,7 @@ function LoginPage() {
     const [buttondisabled, setbuttondisabled] = useState(true);
     const navigate = useNavigate()
     const {setIsLoggedIn} = useAppContext()
+    const bearerToken = sessionStorage.getItem('bearer-token');
 
     useEffect(() => {
       if (sessionStorage.getItem('auth-token')) {
@@ -26,7 +27,8 @@ function LoginPage() {
         const response = await fetch(url, {
           method: 'POST',
           headers:{
-            'Content-type': 'application/json'
+            'Content-type': 'application/json',
+            'Authorization': bearerToken ? `Bearer ${bearerToken}` : '',
           },
           body: JSON.stringify({
             email: email,
